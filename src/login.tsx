@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import {checkToken, tokenRefresh} from "./token"
+import { useNavigate } from "react-router-dom";
 
 const loginResponse = async (phoneNumber: string, password: string) => {
     const requestUrl = "http://localhost:8080/auth/login";
@@ -25,7 +28,11 @@ const loginResponse = async (phoneNumber: string, password: string) => {
     // useState의 타입 정의
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-  
+    const navigate = useNavigate();
+    const goLogin = () => {
+        navigate("/home")
+    }
+
     // 이벤트 핸들러의 타입 정의
     const phoneNumberHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       setPhoneNumber(event.currentTarget.value)
@@ -41,6 +48,12 @@ const loginResponse = async (phoneNumber: string, password: string) => {
       console.log(phoneNumber, password);
       const result = await loginResponse(phoneNumber, password);
       console.log(result);
+      if(result.message === 'Login Success') {
+        Cookies.set('accessToken', result.data.accessToken, { expires: 7 });
+        Cookies.set('refreshToken', result.data.refreshToken, { expires: 7 });
+        goLogin();
+      }
+      
     }
     
     return (

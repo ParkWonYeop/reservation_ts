@@ -29,12 +29,11 @@ const signupResponse = async (phoneNumber: string, password: string, name:string
     const goLogin = () => {
         navigate("/login")
     }
-    // useState의 타입 정의
+    
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [name, setName] = useState<string>("");
   
-    // 이벤트 핸들러의 타입 정의
     const phoneNumberHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       setPhoneNumber(event.currentTarget.value)
     }
@@ -47,7 +46,6 @@ const signupResponse = async (phoneNumber: string, password: string, name:string
       setName(event.currentTarget.value)
     }
   
-    // 비동기 처리 개선
     const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       console.log(phoneNumber, password);
